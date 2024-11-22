@@ -50,7 +50,8 @@ export default async function TravelPage({ searchParams }) {
     const itemsPerPage = 24;
 
     // Use absolute URL for server component
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+    const response = await fetch(`${apiUrl}/api/products`, {
       cache: "no-store",
     });
 

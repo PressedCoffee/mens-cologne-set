@@ -18,13 +18,10 @@ export default async function Home({ searchParams }) {
     const itemsPerPage = 24;
 
     // Use absolute URL for server component
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/products`,
-      {
-        cache: "no-store",
-      }
-    );
-
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    const response = await fetch(`${apiUrl}/api/products`, {
+      cache: "no-store",
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

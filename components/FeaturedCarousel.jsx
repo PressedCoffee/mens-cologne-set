@@ -118,7 +118,9 @@ export default function FeaturedCarousel() {
   useEffect(() => {
     async function loadProducts() {
       try {
-        const response = await fetch("/api/products");
+        const apiUrl =
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+        const response = await fetch(`${apiUrl}/api/products`);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

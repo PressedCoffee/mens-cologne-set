@@ -69,7 +69,8 @@ export default async function GiftGuidePage({ searchParams }) {
   const itemsPerPage = 24;
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+    const response = await fetch(`${apiUrl}/api/products`, {
       cache: "no-store",
     });
 

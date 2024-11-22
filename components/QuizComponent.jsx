@@ -56,7 +56,8 @@ const questions = [
 
 async function getMatchingProducts(recommendation, answers) {
   try {
-    const response = await fetch("/api/products");
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    const response = await fetch(`${apiUrl}/api/products`);
     if (!response.ok) {
       throw new Error("Failed to fetch products");
     }
@@ -237,18 +238,22 @@ export default function QuizComponent() {
     setError(null);
 
     try {
-      // Format answers for the API
+      // Format answers before sending
       const formattedAnswers = newAnswers.map((ans) => ({
-        answer: ans.label,
         value: ans.value,
+        label: ans.label,
       }));
 
       // Get recommendation
-      const recommendationResponse = await fetch("/api/quiz-recommendation", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers: formattedAnswers }),
-      });
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const recommendationResponse = await fetch(
+        `${apiUrl}/api/quiz-recommendation`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ answers: formattedAnswers }),
+        }
+      );
 
       if (!recommendationResponse.ok) {
         throw new Error("Failed to get recommendation");
@@ -258,7 +263,7 @@ export default function QuizComponent() {
       setRecommendation(recommendation);
 
       // Get matching products
-      const productsResponse = await fetch("/api/products");
+      const productsResponse = await fetch(`${apiUrl}/api/products`);
       if (!productsResponse.ok) {
         throw new Error("Failed to fetch products");
       }
