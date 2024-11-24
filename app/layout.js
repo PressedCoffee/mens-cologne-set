@@ -7,10 +7,16 @@ import EPNScript from "@/components/EPNScript";
 const playfair = Playfair_Display({ subsets: ["latin"] });
 const openSans = Open_Sans({ subsets: ["latin"] });
 
+import { Metadata } from "next";
+
 export const metadata = {
-  title: "Men's Cologne Set",
+  metadataBase: new URL("https://mens-cologne-set.vercel.app"), // Update this to your actual domain
+  title: {
+    default: "Designer Cologne Sets | Premium Fragrance Collections",
+    template: "%s | Designer Cologne Sets",
+  },
   description:
-    "Luxury Men's Cologne Sets Curated for the Distinguished Gentleman",
+    "Shop premium designer cologne sets. Authentic fragrances perfect for gifting or personal collection.",
 };
 
 export default function RootLayout({ children }) {

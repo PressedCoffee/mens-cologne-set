@@ -33,10 +33,12 @@ function CarouselContent({
             <div className="relative w-full h-full">
               <Image
                 src={getHighResImage(product.image_url)}
-                alt={product.title || ""}
+                alt={product.title || "Featured Product"}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                 className="object-contain"
                 priority={index === 0}
+                quality={75}
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 to-transparent p-8">
                 <h3 className="text-2xl font-serif text-white mb-2">
