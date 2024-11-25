@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import BuyButton from "@/components/BuyButton.jsx";
 import { generateProductDescription } from "@/utils/openai";
 
-// Utility functions
+// Utility functions remain the same
 function getHighResImage(url) {
   try {
     return url.replace("s-l225", "s-l1600");
@@ -73,8 +73,10 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// Schema markup component
+// Updated Schema markup component
 function ProductJsonLd({ product }) {
+  const imageUrl = getHighResImage(product.image_url);
+
   return (
     <script
       type="application/ld+json"
@@ -83,16 +85,36 @@ function ProductJsonLd({ product }) {
           "@context": "https://schema.org",
           "@type": "Product",
           name: product.title,
-          image: getHighResImage(product.image_url),
           description:
             product.description ||
             `Experience this premium cologne set featuring ${product.title}. Perfect for trying new scents or travel.`,
+          image: [imageUrl], // Now an array as required by Google
           offers: {
             "@type": "Offer",
             price: product.price,
             priceCurrency: "USD",
             availability: "https://schema.org/InStock",
             url: product.url,
+            seller: {
+              "@type": "Organization",
+              name: "eBay Seller",
+            },
+            // Generic return policy referencing eBay's guarantee
+            hasMerchantReturnPolicy: {
+              "@type": "MerchantReturnPolicy",
+              returnPolicyCategory:
+                "https://schema.org/MerchantReturnUnspecified",
+              merchantReturnLink:
+                "https://www.ebay.com/help/policies/member-behaviour-policies/ebay-money-back-guarantee-policy?id=4210",
+            },
+            // Generic shipping details
+            shippingDetails: {
+              "@type": "OfferShippingDetails",
+              shippingDestination: {
+                "@type": "DefinedRegion",
+                addressCountry: "US",
+              },
+            },
           },
           brand: {
             "@type": "Brand",
@@ -100,15 +122,20 @@ function ProductJsonLd({ product }) {
               product.title.match(/^([\w\s&]+)/)?.[1].trim() ||
               "Designer Fragrance",
           },
+          merchant: {
+            "@type": "Organization",
+            name: "eBay",
+          },
+          itemCondition: "https://schema.org/NewCondition",
+          identifier: product.id,
+          category: "Health & Beauty > Fragrances > Men's Fragrances",
         }),
       }}
     />
   );
 }
 
-// Main component
-// ... previous imports and utility functions remain the same ...
-
+// Main component remains exactly the same
 export default async function ProductPage({ params }) {
   const productData = await getProductWithDescription(params.id);
 
